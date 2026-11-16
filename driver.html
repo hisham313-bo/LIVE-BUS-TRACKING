@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Driver GPS Tracking Module</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      Driver GPS Module <span class="badge">Real-Time Producer</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Passenger Map</a>
+      <a href="/driver" class="active">Driver Tracker</a>
+      <a href="/admin">Admin Panel</a>
+    </div>
+  </nav>
+
+  <main class="container" style="max-width: 780px;">
+    <div id="httpsWarning" class="banner-warn">
+      <strong>HTTPS Required for Real Phone GPS:</strong> You are currently viewing over HTTP. Mobile browsers require <code>https://</code> (e.g. via Render, Railway, or ngrok) to unlock smartphone GPS hardware.
+    </div>
+
+    <div class="card">
+      <h2 style="margin-bottom: 0.4rem;">Bus Location Transmitter</h2>
+      <p style="color: #475569; font-size: 0.9rem; margin-bottom: 1rem;">
+        Streams real smartphone GPS coordinates (<code>watchPosition</code> + Screen Wake Lock) or runs a route simulator for indoor testing.
+      </p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="driverBusSelect">Assigned Bus</label>
+          <select id="driverBusSelect"></select>
+        </div>
+
+        <div class="field">
+          <label for="modeSelect">Location Source Mode</label>
+          <select id="modeSelect">
+            <option value="gps" selected>Real Smartphone GPS (watchPosition)</option>
+            <option value="sim">Route Simulator (Indoor / Lab Demo)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="intervalSelect">Min Transmit Interval (T)</label>
+          <select id="intervalSelect">
+            <option value="2000">Every 2 seconds (Ultra Live)</option>
+            <option value="5000" selected>Every 5 seconds (Paper Default)</option>
+            <option value="10000">Every 10 seconds (Battery Saver)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="simSpeedInput">Simulator Speed (km/h)</label>
+          <input id="simSpeedInput" type="number" min="0" max="100" value="32" />
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem;">
+        <button id="startBtn" class="btn-success">Start Live Tracking</button>
+        <button id="stopBtn" class="btn-danger" disabled>Stop Tracking</button>
+        <button id="sendOnceBtn" class="btn-secondary">Send Single Ping</button>
+      </div>
+
+      <div class="log-box" id="txLog">[READY] Select a bus and tap Start Live Tracking...</div>
+    </div>
+  </main>
+
+  <script src="/static/js/driver.js"></script>
+</body>
+</html>

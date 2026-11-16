@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Bus Live Tracking - Passenger View</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      Smart Bus Live Tracking <span class="badge">LIVE SSE STREAM</span>
+    </div>
+    <div class="nav-links">
+      <a href="/" class="active">Passenger Map</a>
+      <a href="/driver">Driver Tracker</a>
+      <a href="/admin">Admin Panel</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="toolbar">
+      <div class="field">
+        <label for="busSelect">Select Bus</label>
+        <select id="busSelect"></select>
+      </div>
+      <div class="field">
+        <label for="stopSelect">Destination / Boarding Stop</label>
+        <select id="stopSelect"></select>
+      </div>
+      <button id="refreshBtn" class="btn-primary">Sync Now</button>
+    </section>
+
+    <section class="grid-main">
+      <div class="card" style="padding: 0.5rem;">
+        <div id="map"></div>
+      </div>
+
+      <aside class="card">
+        <div class="status-header">
+          <h3 id="panelBusTitle">Bus B101</h3>
+          <span id="statusPill" class="pill pill-live">LIVE</span>
+        </div>
+
+        <div class="metric-list">
+          <div class="metric-item">
+            <span class="label">Stream Mode</span>
+            <span class="val" id="panelStream">SSE Push</span>
+          </div>
+          <div class="metric-item">
+            <span class="label">Route</span>
+            <span class="val" id="panelRoute">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="label">Target Stop</span>
+            <span class="val" id="panelStop">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="label">Approx. ETA</span>
+            <span class="val" id="panelEta">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="label">Straight-Line Dist</span>
+            <span class="val" id="panelDist">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="label">Current Speed</span>
+            <span class="val" id="panelSpeed">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="label">Last Seen</span>
+            <span class="val" id="panelSeen">-</span>
+          </div>
+        </div>
+
+        <h4 style="margin-top: 1rem; font-size: 0.85rem; color: #475569; text-transform: uppercase;">
+          Route Stops (Click to compute ETA)
+        </h4>
+        <ul id="stopsList" class="stops-list"></ul>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/js/passenger.js"></script>
+</body>
+</html>

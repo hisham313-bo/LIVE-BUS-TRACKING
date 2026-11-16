@@ -1,0 +1,282 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f1f5f9;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.navbar {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar .brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar .brand span.badge {
+  background: #2563eb;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.nav-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 1.25rem auto;
+  padding: 0 1rem;
+}
+
+.toolbar {
+  background: #ffffff;
+  padding: 0.9rem 1.1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 200px;
+}
+
+.field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+select, input {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  background: #ffffff;
+}
+
+button {
+  padding: 0.52rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+button:hover {
+  opacity: 0.92;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn-success {
+  background: #059669;
+  color: #ffffff;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: #475569;
+  color: #ffffff;
+}
+
+.grid-main {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .grid-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 1.1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+#map {
+  height: 520px;
+  width: 100%;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.pill {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.pill-live {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.pill-stale {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.metric-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.metric-item span.label {
+  color: #64748b;
+}
+
+.metric-item span.val {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.stops-list {
+  margin-top: 1rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.stops-list li {
+  padding: 0.45rem 0.65rem;
+  border-left: 3px solid #cbd5e1;
+  background: #f8fafc;
+  font-size: 0.86rem;
+  cursor: pointer;
+  border-radius: 0 6px 6px 0;
+}
+
+.stops-list li.selected-stop {
+  border-left-color: #2563eb;
+  background: #eff6ff;
+  font-weight: 600;
+}
+
+.bus-marker-icon {
+  background: #2563eb;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.bus-marker-icon.stale {
+  background: #64748b;
+  opacity: 0.75;
+}
+
+.log-box {
+  background: #0f172a;
+  color: #38bdf8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  padding: 0.85rem;
+  border-radius: 8px;
+  height: 220px;
+  overflow-y: auto;
+  margin-top: 0.85rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.banner-warn {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 0.85rem;
+  display: none;
+}

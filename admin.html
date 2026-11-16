@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Smart Bus Live Tracking</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      Fleet Administration <span class="badge">FR6</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Passenger Map</a>
+      <a href="/driver">Driver Tracker</a>
+      <a href="/admin" class="active">Admin Panel</a>
+    </div>
+  </nav>
+
+  <main class="container" style="max-width: 900px;">
+    <div id="loginCard" class="card" style="max-width: 420px; margin: 2rem auto;">
+      <h3 style="margin-bottom: 0.75rem;">Administrator Login</h3>
+      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">
+        Default prototype credentials: <code>admin</code> / <code>pace2026</code>
+      </p>
+      <div class="field" style="margin-bottom: 0.75rem;">
+        <label>Username</label>
+        <input id="adminUser" value="admin" />
+      </div>
+      <div class="field" style="margin-bottom: 1rem;">
+        <label>Password</label>
+        <input id="adminPass" type="password" value="pace2026" />
+      </div>
+      <button id="loginBtn" class="btn-primary" style="width: 100%;">Sign In</button>
+      <p id="loginErr" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.5rem;"></p>
+    </div>
+
+    <div id="dashboardArea" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>Manage Routes &amp; Buses</h2>
+        <button id="logoutBtn" class="btn-secondary">Logout</button>
+      </div>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <h3 style="margin-bottom: 0.75rem;">1. Add New Route</h3>
+        <div class="form-grid">
+          <div class="field"><label>Route ID</label><input id="rId" placeholder="R4" /></div>
+          <div class="field"><label>Route Name</label><input id="rName" placeholder="Surathkal Express" /></div>
+          <div class="field"><label>Start Point</label><input id="rStart" placeholder="Surathkal" /></div>
+          <div class="field"><label>Destination</label><input id="rDest" placeholder="PACE Campus" /></div>
+          <div class="field"><label>Polyline Color</label><input id="rColor" type="color" value="#7c3aed" /></div>
+        </div>
+        <button id="addRouteBtn" class="btn-primary">Create Route</button>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 0.75rem;">2. Register New Bus</h3>
+        <div class="form-grid">
+          <div class="field"><label>Bus ID</label><input id="bId" placeholder="B104" /></div>
+          <div class="field"><label>Registration Number</label><input id="bNum" placeholder="KA-19-AB-1104" /></div>
+          <div class="field"><label>Driver Name / ID</label><input id="bDriver" placeholder="DRV-04 (Karthik)" /></div>
+          <div class="field"><label>Assigned Route</label><select id="bRouteSelect"></select></div>
+        </div>
+        <button id="addBusBtn" class="btn-success">Register Bus</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function checkAuth() {
+      const res = await fetch("/api/admin/status");
+      const data = await res.json();
+      document.getElementById("loginCard").style.display = data.authenticated ? "none" : "block";
+      document.getElementById("dashboardArea").style.display = data.authenticated ? "block" : "none";
+      if (data.authenticated) loadRouteDropdowns();
+    }
+
+    async function loadRouteDropdowns() {
+      const res = await fetch("/api/routes");
+      const data = await res.json();
+      const el = document.getElementById("bRouteSelect");
+      el.innerHTML = "";
+      (data.routes || []).forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r.route_id;
+        opt.textContent = `${r.route_id} - ${r.route_name}`;
+        el.appendChild(opt);
+      });
+    }
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: document.getElementById("adminUser").value,
+          password: document.getElementById("adminPass").value
+        })
+      });
+      if (res.ok) {
+        checkAuth();
+      } else {
+        document.getElementById("loginErr").textContent = "Invalid admin username or password.";
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await fetch("/api/admin/logout", { method: "POST" });
+      checkAuth();
+    });
+
+    document.getElementById("addRouteBtn").addEventListener("click", async () => {
+      const res = await fetch("/api/admin/route", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          route_id: document.getElementById("rId").value,
+          route_name: document.getElementById("rName").value,
+          start: document.getElementById("rStart").value,
+          destination: document.getElementById("rDest").value,
+          color: document.getElementById("rColor").value
+        })
+      });
+      const data = await res.json();
+      alert(res.ok ? `Route ${data.route_id} created!` : data.error);
+      if (res.ok) loadRouteDropdowns();
+    });
+
+    document.getElementById("addBusBtn").addEventListener("click", async () => {
+      const res = await fetch("/api/admin/bus", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bus_id: document.getElementById("bId").value,
+          bus_number: document.getElementById("bNum").value,
+          driver_id: document.getElementById("bDriver").value,
+          route_id: document.getElementById("bRouteSelect").value
+        })
+      });
+      const data = await res.json();
+      alert(res.ok ? `Bus ${data.bus_id} registered (Token: ${data.api_token})` : data.error);
+    });
+
+    checkAuth();
+  </script>
+</body>
+</html>
